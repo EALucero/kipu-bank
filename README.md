@@ -13,9 +13,9 @@ KipuBank es un contrato que permite a los usuarios depositar y retirar ETH con r
 
 ## 🛠️ Despliegue
 
-1. Clona el repositorio:
-   git clone https://github.com/EALucero/kipu-bank.git
-   cd kipu-bank
+Clona el repositorio:
+1.   git clone https://github.com/EALucero/kipu-bank.git
+2.   cd kipu-bank
 
 ## ☝🏼 Como interactuar
 - Deployar en Remix.
