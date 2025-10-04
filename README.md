@@ -26,4 +26,4 @@ Clona el repositorio:
 - Se utiliza vaults y la dirección del cliente para mostrar información específica del cliente y si quiere saber su balance, getVaultBalance. Devuelven la misma info, pero pensandolo utilizado junto a una extructura más amigable al cliente (front), su separación ayudaría a la lógica a implementar.
 
 ## ✅ Verificación de contrato
-https://sepolia.etherscan.io/address/0xbb74c1cdf4417606dfd634ef87c0fe376ca90a7a
+https://sepolia.etherscan.io/address/0xa531558A35244cD249b7d9DfE80a8Eb7d9748ca8
