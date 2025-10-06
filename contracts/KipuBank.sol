@@ -31,23 +31,37 @@ contract KipuBank {
     event Deposit(address indexed user, uint256 amount);
     /// @notice Emitido cuando un usuario retira ETH
     event Withdrawal(address indexed user, uint256 amount);
-    /// @notice Emitido si llega al fallback
-    event UnexpectedCall(address sender, uint256 value, bytes data);
 
     // ─────── ERRORES PERSONALIZADOS ──────── //
 
+    /// @notice Se lanza si el depósito excede el límite global
     error DepositLimitExceeded();
+    /// @notice Si el usuario intenta retirar más de lo que tiene
     error InsufficientBalance();
+    /// @notice Si la transferencia de ETH falla
     error TransferFailed();
+    /// @notice Si el depósito excede el límite permitido
     error WithdrawalLimitExceeded();
+    /// @notice Si el límite de banco es inválido
+    error InvalidBankCap(uint256 provided);
+    /// @notice Si se llama al fallback con datos no reconocidos
+    error InvalidFallbackCall();
+    /// @notice Si los parámetros del constructor son inconsistentes
+    error InvalidParameters();
+    /// @notice Si el límite de retiro es inválido
+    error InvalidWithdrawalLimit(uint256 provided);
 
     // ─────── CONSTRUCTOR ──────── //
 
-    /// @param _withdrawalLimit Límite por retiro
-    /// @param _bankCap Límite global de depósitos
+    /**
+     * @param _withdrawalLimit Límite por retiro
+     * @param _bankCap Límite global de depósitos
+     */
     constructor(uint256 _withdrawalLimit, uint256 _bankCap) {
-        require(_withdrawalLimit > 0, "Limite de retiro debe ser > 0");
-        require(_bankCap > 0, "Limite de banco debe ser > 0");
+        if (_withdrawalLimit == 0) revert InvalidWithdrawalLimit(_withdrawalLimit);
+        if (_bankCap == 0) revert InvalidBankCap(_bankCap);
+        if (_withdrawalLimit > _bankCap) revert InvalidParameters();
+
         withdrawalLimit = _withdrawalLimit;
         bankCap = _bankCap;
     }
@@ -69,8 +83,7 @@ contract KipuBank {
 
     /// @notice Rechaza llamadas con datos no reconocidos
     fallback() external payable {
-        emit UnexpectedCall(msg.sender, msg.value, msg.data);
-        revert("Fallback: llamada invalida");
+        revert InvalidFallbackCall();
     }
 
     /// @notice Deposita ETH en la bóveda personal
